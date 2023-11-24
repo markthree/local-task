@@ -15,8 +15,12 @@ function isRemove(msg: unknown): msg is Remove {
   return Boolean((msg as Remove).type === "remove" && (msg as Remove).path);
 }
 
-kv.listenQueue((msg: unknown) => {
+function tryRemove(path: string) {
+  return Deno.remove(path).catch(() => {});
+}
+
+kv.listenQueue(async (msg: unknown) => {
   if (isRemove(msg)) {
-    Deno.remove(msg.path);
+    await tryRemove(msg.path);
   }
 });
