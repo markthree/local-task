@@ -1,10 +1,10 @@
 // 一个服务，用来自动解压 zip 到 code demo 目录
 // @ts-ignore 未提供类型支持
 import { unrar } from "npm:unrar-promise";
+import { kv } from "./kv.ts";
 import "https://deno.land/std@0.204.0/dotenv/load.ts";
 import { resolve } from "https://deno.land/std@0.202.0/path/mod.ts";
 import { exists } from "https://deno.land/std@0.202.0/fs/exists.ts";
-import { delay } from "https://deno.land/std@0.202.0/async/delay.ts";
 import { format } from "https://deno.land/std@0.202.0/datetime/format.ts";
 import { unzip } from "https://deno.land/x/nzip@v0.3.5/src/decompress.ts";
 import { ensureDir } from "https://deno.land/std@0.202.0/fs/ensure_dir.ts";
@@ -34,9 +34,10 @@ export async function autoUnzip() {
           await ensureDir(output);
           await un(file, output);
 
-          // 1 小时后删除
-          await delay(hour);
-          await Deno.remove(file);
+          await kv.enqueue({
+            type: "remove",
+            path: file,
+          }, { delay: hour });
         } catch (error) {
           await ensureDir("logs");
           await writeTextLog({

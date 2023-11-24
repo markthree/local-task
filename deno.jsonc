@@ -1,0 +1,6 @@
+{
+  "tasks": {
+    "start": "deno run --allow-read --allow-write --allow-env --unstable-kv index.ts",
+    "hmr": "deno run --allow-read --allow-write --allow-env --unstable-kv --unstable-hmr index.ts"
+  }
+}
