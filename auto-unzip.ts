@@ -1,7 +1,7 @@
 // 一个服务，用来自动解压 zip 到 code demo 目录
 // @ts-ignore 未提供类型支持
 import { unrar } from "npm:unrar-promise";
-import { ensureRemove, kv } from "./kv.ts";
+import { ensureRemove } from "./kv.ts";
 import "https://deno.land/std@0.204.0/dotenv/load.ts";
 import { resolve } from "https://deno.land/std@0.202.0/path/mod.ts";
 import { exists } from "https://deno.land/std@0.202.0/fs/exists.ts";
