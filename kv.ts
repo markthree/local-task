@@ -24,3 +24,10 @@ kv.listenQueue(async (msg: unknown) => {
     await tryRemove(msg.path);
   }
 });
+
+export async function ensureRemove(path: string, delay: number) {
+  await kv.enqueue({
+    path,
+    type: "remove",
+  }, { delay });
+}

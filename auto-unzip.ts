@@ -1,7 +1,7 @@
 // 一个服务，用来自动解压 zip 到 code demo 目录
 // @ts-ignore 未提供类型支持
 import { unrar } from "npm:unrar-promise";
-import { kv } from "./kv.ts";
+import { ensureRemove, kv } from "./kv.ts";
 import "https://deno.land/std@0.204.0/dotenv/load.ts";
 import { resolve } from "https://deno.land/std@0.202.0/path/mod.ts";
 import { exists } from "https://deno.land/std@0.202.0/fs/exists.ts";
@@ -14,6 +14,9 @@ export async function autoUnzip() {
   const demo = getDemoDir();
   const watcher = Deno.watchFs(getDownloadDir(), { recursive: false });
 
+  // 可能会触发多次解压
+  const unPending = new Set<string>();
+
   for await (const event of watcher) {
     if (event.kind === "modify") {
       const files = event.paths.filter((path) =>
@@ -24,20 +27,20 @@ export async function autoUnzip() {
         continue;
       }
       files.forEach(async (file) => {
+        if (unPending.has(file)) {
+          return;
+        }
+        unPending.add(file);
         const date = new Date();
         try {
           const output = formatoutput(demo, date);
           if (await exists(output, { isDirectory: true })) {
             return;
           }
-
           await ensureDir(output);
           await un(file, output);
-
-          await kv.enqueue({
-            type: "remove",
-            path: file,
-          }, { delay: hour });
+          await ensureRemove(file, hour);
+          await ensureRemove(output, hour);
         } catch (error) {
           await ensureDir("logs");
           await writeTextLog({
@@ -45,6 +48,8 @@ export async function autoUnzip() {
             file,
             error,
           });
+        } finally {
+          unPending.delete(file);
         }
       });
     }
@@ -78,13 +83,13 @@ async function writeTextLog(
   );
 }
 
-async function un(file: string, output: string) {
+function un(file: string, output: string) {
   if (file.endsWith(".zip")) {
-    await unzip(file, output);
+    return unzip(file, output);
   }
 
   if (file.endsWith(".rar")) {
-    await unrar(file, output);
+    return unrar(file, output);
   }
   throw new Deno.errors.NotSupported("不支持非 .zip 和 .rar 的压缩");
 }
