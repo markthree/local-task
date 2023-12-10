@@ -9,9 +9,9 @@ import { format } from "https://deno.land/std@0.208.0/datetime/format.ts";
 import { unzip } from "https://deno.land/x/nzip@v0.6.2/src/decompress.ts";
 import { ensureDir } from "https://deno.land/std@0.208.0/fs/ensure_dir.ts";
 import { delay } from "https://deno.land/std@0.208.0/async/delay.ts";
+import { HOUR } from "https://deno.land/std@0.208.0/datetime/constants.ts";
 
 export async function autoUnzip() {
-  const hour = 60 * 60 * 1000;
   const demo = getDemoDir();
   const watcher = Deno.watchFs(getDownloadDir(), { recursive: false });
 
@@ -40,7 +40,7 @@ export async function autoUnzip() {
           }
           await ensureDir(output);
           await un(file, output);
-          await ensureRemove(file, hour);
+          await ensureRemove(file, HOUR);
           // TODO 通过标识来处理移除
           // await ensureRemove(output, hour);
         } catch (error) {
