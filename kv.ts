@@ -16,7 +16,11 @@ function isRemove(msg: unknown): msg is Remove {
 }
 
 function tryRemove(path: string) {
-  return Deno.remove(path).catch(() => {});
+  return Deno.remove(path, { recursive: true }).catch(async (error) => {
+    await ensureDir("log");
+
+    Deno.writeTextFile("logs/error.txt", JSON.stringify(error, null, 2));
+  });
 }
 
 kv.listenQueue(async (msg: unknown) => {

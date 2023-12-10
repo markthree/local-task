@@ -2,12 +2,13 @@
 // @ts-ignore 未提供类型支持
 import { unrar } from "npm:unrar-promise";
 import { ensureRemove } from "./kv.ts";
-import "https://deno.land/std@0.204.0/dotenv/load.ts";
-import { resolve } from "https://deno.land/std@0.202.0/path/mod.ts";
-import { exists } from "https://deno.land/std@0.202.0/fs/exists.ts";
-import { format } from "https://deno.land/std@0.202.0/datetime/format.ts";
-import { unzip } from "https://deno.land/x/nzip@v0.3.5/src/decompress.ts";
-import { ensureDir } from "https://deno.land/std@0.202.0/fs/ensure_dir.ts";
+import "https://deno.land/std@0.208.0/dotenv/load.ts";
+import { resolve } from "https://deno.land/std@0.208.0/path/mod.ts";
+import { exists } from "https://deno.land/std@0.208.0/fs/exists.ts";
+import { format } from "https://deno.land/std@0.208.0/datetime/format.ts";
+import { unzip } from "https://deno.land/x/nzip@v0.6.2/src/decompress.ts";
+import { ensureDir } from "https://deno.land/std@0.208.0/fs/ensure_dir.ts";
+import { delay } from "https://deno.land/std@0.208.0/async/delay.ts";
 
 export async function autoUnzip() {
   const hour = 60 * 60 * 1000;
@@ -40,7 +41,8 @@ export async function autoUnzip() {
           await ensureDir(output);
           await un(file, output);
           await ensureRemove(file, hour);
-          await ensureRemove(output, hour);
+          // TODO 通过标识来处理移除
+          // await ensureRemove(output, hour);
         } catch (error) {
           await ensureDir("logs");
           await writeTextLog({
@@ -49,6 +51,7 @@ export async function autoUnzip() {
             error,
           });
         } finally {
+          await delay(2000);
           unPending.delete(file);
         }
       });
