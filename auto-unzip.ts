@@ -10,6 +10,7 @@ import { unzip } from "https://deno.land/x/nzip@v0.6.2/src/decompress.ts";
 import { ensureDir } from "https://deno.land/std@0.208.0/fs/ensure_dir.ts";
 import { delay } from "https://deno.land/std@0.208.0/async/delay.ts";
 import { HOUR } from "https://deno.land/std@0.208.0/datetime/constants.ts";
+import { ensureFile } from "https://deno.land/std@0.208.0/fs/ensure_file.ts";
 
 export async function autoUnzip() {
   const demo = getDemoDir();
@@ -33,13 +34,17 @@ export async function autoUnzip() {
         }
         unPending.add(file);
         const date = new Date();
+
         try {
           const output = formatoutput(demo, date);
+          const pendingFlagFile = resolve(output, "un-pending");
           if (await exists(output, { isDirectory: true })) {
             return;
           }
           await ensureDir(output);
+          await ensureFile(pendingFlagFile);
           await un(file, output);
+          await Deno.remove(pendingFlagFile);
           await ensureRemove(file, HOUR);
           // TODO 通过标识来处理移除
           // await ensureRemove(output, hour);
