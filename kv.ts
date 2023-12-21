@@ -19,7 +19,14 @@ function tryRemove(path: string) {
   return Deno.remove(path, { recursive: true }).catch(async (error) => {
     await ensureDir("logs");
 
-    Deno.writeTextFile("logs/error.txt", JSON.stringify(error, null, 2));
+    // append error
+    Deno.writeTextFile(
+      "logs/error.txt",
+      JSON.stringify({ path, error }, null, 2),
+      {
+        append: true,
+      },
+    );
   });
 }
 
