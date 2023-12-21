@@ -46,8 +46,7 @@ export async function autoUnzip() {
           await un(file, output);
           await Deno.remove(pendingFlagFile);
           await ensureRemove(file, HOUR);
-          // TODO 通过标识来处理移除
-          // await ensureRemove(output, hour);
+          await ensureRemove(output, HOUR);
         } catch (error) {
           await ensureDir("logs");
           await writeTextLog({
