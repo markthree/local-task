@@ -17,7 +17,7 @@ function isRemove(msg: unknown): msg is Remove {
   return Boolean((msg as Remove).type === "remove" && (msg as Remove).path);
 }
 
-async function tryRemove(path: string) {
+async function tryRemove(path: string, willThrow = false) {
   // 标识文件则跳过删除
   if (
     await exists(resolve(path, "todo")) || await exists(resolve(path, "skip"))
@@ -28,6 +28,10 @@ async function tryRemove(path: string) {
   return Deno.remove(path, { recursive: true }).catch(async (error) => {
     await ensureDir("logs");
 
+    if (error instanceof Deno.errors.NotFound) {
+      return
+    }
+
     // append error
     Deno.writeTextFile(
       "logs/error.txt",
@@ -36,12 +40,16 @@ async function tryRemove(path: string) {
         append: true,
       },
     );
+
+      if (willThrow) {
+        throw error
+      }
   });
 }
 
 kv.listenQueue(async (msg: unknown) => {
   if (isRemove(msg)) {
-    await tryRemove(msg.path);
+    await tryRemove(msg.path, true);
   }
 });
 
