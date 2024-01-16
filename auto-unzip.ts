@@ -11,6 +11,7 @@ import { ensureDir } from "https://deno.land/std@0.212.0/fs/ensure_dir.ts";
 import { delay } from "https://deno.land/std@0.212.0/async/delay.ts";
 import { HOUR } from "https://deno.land/std@0.212.0/datetime/constants.ts";
 import { ensureFile } from "https://deno.land/std@0.212.0/fs/ensure_file.ts";
+import { basename } from "https://deno.land/std@0.212.0/path/basename.ts";
 
 export async function autoUnzip() {
   const demo = getDemoDir();
@@ -32,11 +33,12 @@ export async function autoUnzip() {
         if (unPending.has(file)) {
           return;
         }
+        
         unPending.add(file);
         const date = new Date();
 
         try {
-          const output = formatoutput(demo, date);
+          const output = formatOutput(demo, date, file);
           const pendingFlagFile = resolve(output, "un-pending");
           if (await exists(output, { isDirectory: true })) {
             return;
@@ -63,10 +65,11 @@ export async function autoUnzip() {
   }
 }
 
-function formatoutput(output: string, date: Date) {
+function formatOutput(output: string, date: Date, file: string) {
   return resolve(
     output,
-    format(date, "yyyy-MM-dd-HH-mm-ss"),
+    format(date, "dd-HH-mm-"),
+    basename(file)
   );
 }
 
