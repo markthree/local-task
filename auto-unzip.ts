@@ -2,15 +2,15 @@
 // @ts-ignore 未提供类型支持
 import { unrar } from "npm:unrar-promise";
 import { ensureRemove } from "./kv.ts";
-import "https://deno.land/std@0.208.0/dotenv/load.ts";
-import { resolve } from "https://deno.land/std@0.208.0/path/mod.ts";
-import { exists } from "https://deno.land/std@0.208.0/fs/exists.ts";
-import { format } from "https://deno.land/std@0.208.0/datetime/format.ts";
-import { unzip } from "https://deno.land/x/nzip@v0.6.2/src/decompress.ts";
-import { ensureDir } from "https://deno.land/std@0.208.0/fs/ensure_dir.ts";
-import { delay } from "https://deno.land/std@0.208.0/async/delay.ts";
-import { HOUR } from "https://deno.land/std@0.208.0/datetime/constants.ts";
-import { ensureFile } from "https://deno.land/std@0.208.0/fs/ensure_file.ts";
+import "https://deno.land/std@0.212.0/dotenv/load.ts";
+import { resolve } from "https://deno.land/std@0.212.0/path/mod.ts";
+import { exists } from "https://deno.land/std@0.212.0/fs/exists.ts";
+import { format } from "https://deno.land/std@0.212.0/datetime/format.ts";
+import { unzip } from "https://deno.land/x/nzip@v0.6.7/src/decompress.ts";
+import { ensureDir } from "https://deno.land/std@0.212.0/fs/ensure_dir.ts";
+import { delay } from "https://deno.land/std@0.212.0/async/delay.ts";
+import { HOUR } from "https://deno.land/std@0.212.0/datetime/constants.ts";
+import { ensureFile } from "https://deno.land/std@0.212.0/fs/ensure_file.ts";
 
 export async function autoUnzip() {
   const demo = getDemoDir();

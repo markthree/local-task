@@ -1,6 +1,6 @@
-import { ensureDir } from "https://deno.land/std@0.202.0/fs/ensure_dir.ts";
-import { resolve } from "https://deno.land/std@0.202.0/path/resolve.ts";
-import { exists } from "https://deno.land/std@0.208.0/fs/exists.ts";
+import { ensureDir } from "https://deno.land/std@0.212.0/fs/ensure_dir.ts";
+import { resolve } from "https://deno.land/std@0.212.0/path/resolve.ts";
+import { exists } from "https://deno.land/std@0.212.0/fs/exists.ts";
 
 await ensureDir("kv");
 export const kv = await Deno.openKv("./kv/data");
