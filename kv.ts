@@ -29,7 +29,7 @@ async function tryRemove(path: string, willThrow = false) {
     await ensureDir("logs");
 
     if (error instanceof Deno.errors.NotFound) {
-      return
+      return;
     }
 
     // append error
@@ -41,9 +41,9 @@ async function tryRemove(path: string, willThrow = false) {
       },
     );
 
-      if (willThrow) {
-        throw error
-      }
+    if (willThrow) {
+      throw error;
+    }
   });
 }
 

@@ -33,7 +33,7 @@ export async function autoUnzip() {
         if (unPending.has(file)) {
           return;
         }
-        
+
         unPending.add(file);
         const date = new Date();
 
@@ -68,8 +68,7 @@ export async function autoUnzip() {
 function formatOutput(output: string, date: Date, file: string) {
   return resolve(
     output,
-    format(date, "dd-HH-mm-"),
-    basename(file)
+    `${format(date, "dd-HH-mm")}-${basename(file)}`,
   );
 }
 
