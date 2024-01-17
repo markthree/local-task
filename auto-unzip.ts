@@ -6,7 +6,7 @@ import "https://deno.land/std@0.212.0/dotenv/load.ts";
 import { resolve } from "https://deno.land/std@0.212.0/path/mod.ts";
 import { exists } from "https://deno.land/std@0.212.0/fs/exists.ts";
 import { format } from "https://deno.land/std@0.212.0/datetime/format.ts";
-import { unzip } from "https://deno.land/x/nzip@v0.6.7/src/decompress.ts";
+import { unzip } from "https://deno.land/x/nzip@v0.7.0/src/decompress.ts";
 import { ensureDir } from "https://deno.land/std@0.212.0/fs/ensure_dir.ts";
 import { delay } from "https://deno.land/std@0.212.0/async/delay.ts";
 import { HOUR } from "https://deno.land/std@0.212.0/datetime/constants.ts";
@@ -94,13 +94,19 @@ async function writeTextLog(
 
 function un(file: string, output: string) {
   if (file.endsWith(".zip")) {
-    return unzip(file, output);
+    return unzip(file, output, { ignore });
   }
 
   if (file.endsWith(".rar")) {
-    return unrar(file, output);
+    return unrar(file, output, { ignore });
   }
   throw new Deno.errors.NotSupported("不支持非 .zip 和 .rar 的压缩");
+
+  function ignore(entryName: string) {
+    return ["node_modules", "dist", ".nitro", ".output"].some((dir) =>
+      entryName.includes(dir)
+    );
+  }
 }
 
 function getDownloadDir() {

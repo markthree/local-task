@@ -527,6 +527,8 @@
     "https://deno.land/x/nzip@v0.6.2/src/decompress.ts": "9533eb088ff48b3109b1de76d98586ceb5d39850d71571970f1efef82dac978c",
     "https://deno.land/x/nzip@v0.6.2/src/deps.ts": "6c950829bf369872dcbbaa6700471608587c86accbc266cdcfe531fab72dac2a",
     "https://deno.land/x/nzip@v0.6.7/src/decompress.ts": "b3ea25362c3b9d425d83995af89d352f854a10c7e7d8222f7f371bcdf2f0975f",
-    "https://deno.land/x/nzip@v0.6.7/src/deps.ts": "734efe5ab5332dbee4b4108eb1266d178e40d1555ad9b7f87dea407b12db51bb"
+    "https://deno.land/x/nzip@v0.6.7/src/deps.ts": "734efe5ab5332dbee4b4108eb1266d178e40d1555ad9b7f87dea407b12db51bb",
+    "https://deno.land/x/nzip@v0.7.0/src/decompress.ts": "b9358a11a26adacad0cf745d176e7b8691ee2a953addaa129f48ae3ddfbd23d0",
+    "https://deno.land/x/nzip@v0.7.0/src/deps.ts": "734efe5ab5332dbee4b4108eb1266d178e40d1555ad9b7f87dea407b12db51bb"
   }
 }
