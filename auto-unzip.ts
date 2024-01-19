@@ -12,6 +12,7 @@ import { delay } from "https://deno.land/std@0.212.0/async/delay.ts";
 import { HOUR } from "https://deno.land/std@0.212.0/datetime/constants.ts";
 import { ensureFile } from "https://deno.land/std@0.212.0/fs/ensure_file.ts";
 import { basename } from "https://deno.land/std@0.212.0/path/basename.ts";
+import { extname } from "https://deno.land/std@0.212.0/path/extname.ts";
 
 export async function autoUnzip() {
   const demo = getDemoDir();
@@ -22,8 +23,8 @@ export async function autoUnzip() {
 
   for await (const event of watcher) {
     if (event.kind === "modify") {
-      const files = event.paths.filter((path) =>
-        path.endsWith(".zip") || path.endsWith(".rar")
+      const files = event.paths.filter(
+        (path) => path.endsWith(".zip") || path.endsWith(".rar"),
       );
 
       if (files.length === 0) {
@@ -68,7 +69,7 @@ export async function autoUnzip() {
 function formatOutput(output: string, date: Date, file: string) {
   return resolve(
     output,
-    `${format(date, "dd-HH-mm")}-${basename(file)}`,
+    `${format(date, "dd-HH-mm")}-${basename(file, extname(file))}`,
   );
 }
 
@@ -79,9 +80,7 @@ interface LogPayload {
   file: string;
 }
 
-async function writeTextLog(
-  payload: LogPayload,
-) {
+async function writeTextLog(payload: LogPayload) {
   const { date, file, error } = payload;
   await Deno.writeTextFile(
     `logs/${format(date, "yyyy-MM-dd")}`,
@@ -120,9 +119,7 @@ function getDownloadDir() {
   if (USERPROFILE) {
     return resolve(USERPROFILE, "Downloads");
   }
-  throw new Deno.errors.NotFound(
-    "找不到 USERPROFILE 或 DOWNLOAD_DIR 环境变量",
-  );
+  throw new Deno.errors.NotFound("找不到 USERPROFILE 或 DOWNLOAD_DIR 环境变量");
 }
 
 function getDemoDir() {
@@ -130,7 +127,5 @@ function getDemoDir() {
   if (DEMO_DIR) {
     return DEMO_DIR;
   }
-  throw new Deno.errors.NotFound(
-    "找不到 DEMO_DIR 环境变量",
-  );
+  throw new Deno.errors.NotFound("找不到 DEMO_DIR 环境变量");
 }
