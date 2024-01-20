@@ -9,7 +9,7 @@ export async function autoGitClone() {
       continue;
     }
     lastText = text;
-    if (text.includes("github")) {
+    if (text.includes("git@github.com")) {
       await execa(["git", "clone", text], {
         cwd: getRefsDir(),
       });
