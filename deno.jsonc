@@ -1,6 +1,6 @@
 {
   "tasks": {
-    "start": "deno run --allow-ffi --allow-run --unstable-ffi --allow-read --allow-write --allow-env --unstable-kv index.ts",
-    "hmr": "deno run --allow-ffi --allow-run --unstable-ffi --allow-read --allow-write --allow-env --unstable-kv --unstable-hmr index.ts"
+    "start": "deno run --allow-ffi --allow-run --unstable-ffi --allow-read --allow-write --allow-env --unstable-kv --allow-net --unstable-worker-options index.ts",
+    "hmr": "deno run --allow-ffi --allow-run --unstable-ffi --allow-read --allow-write --allow-env --unstable-kv --unstable-hmr --allow-net --unstable-worker-options index.ts"
   }
 }
