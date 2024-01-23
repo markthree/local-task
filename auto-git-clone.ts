@@ -2,14 +2,14 @@ import { watchClipboard } from "./clipboard-event/index.ts";
 import { exists } from "https://deno.land/std@0.212.0/fs/exists.ts";
 import { basename } from "https://deno.land/std@0.212.0/path/basename.ts";
 import { join } from "https://deno.land/std@0.212.0/path/join.ts";
-import { execa } from "https://deno.land/x/easy_std@v0.7.1/mod.ts";
+import { execa, noop } from "https://deno.land/x/easy_std@v0.7.1/mod.ts";
 
 export async function autoGitClone() {
   const refs = getRefsDir();
   watchClipboard(async (text) => {
     const dir = join(refs, basename(text, ".git"));
     if (text.includes("git@github.com") && !await exists(dir)) {
-      await execa(["git", "clone", text], { cwd: refs });
+      await execa(["git", "clone", text], { cwd: refs }).catch(noop)
     }
   });
 }
