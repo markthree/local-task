@@ -9,7 +9,16 @@ export async function autoGitClone() {
   watchClipboard(async (text) => {
     const dir = join(refs, basename(text, ".git"));
     if (text.includes("git@github.com") && !await exists(dir)) {
-      await execa(["git", "clone", text], { cwd: refs }).catch(noop)
+      await execa(["git", "clone", text], { cwd: refs }).catch((error) => {
+        // append error
+        Deno.writeTextFile(
+          "logs/error.txt",
+          JSON.stringify({ text, error }, null, 2),
+          {
+            append: true,
+          },
+        );
+      });
     }
   });
 }

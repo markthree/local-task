@@ -50,7 +50,7 @@ export function watchClipboard(fn: WatchClipboardFn) {
     new WritableStream({
       async write(chunk) {
         const text = await clippy.readText();
-        const event =  textDecoder.decode(chunk).trim() 
+        const event = textDecoder.decode(chunk).trim();
         if (
           event === "CLIPBOARD_CHANGE" &&
           lastText !== text
