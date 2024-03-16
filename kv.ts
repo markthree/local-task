@@ -1,6 +1,6 @@
 import { ensureDir } from "https://deno.land/std@0.212.0/fs/ensure_dir.ts";
 import { resolve } from "https://deno.land/std@0.212.0/path/resolve.ts";
-import { exists } from "https://deno.land/std@0.212.0/fs/exists.ts";
+import { findFile } from "https://deno.land/x/easy_std@v0.7.1/mod.ts";
 
 await ensureDir("kv");
 export const kv = await Deno.openKv("./kv/data");
@@ -20,7 +20,9 @@ function isRemove(msg: unknown): msg is Remove {
 async function tryRemove(path: string, willThrow = false) {
   // 标识文件则跳过删除
   if (
-    await exists(resolve(path, "todo")) || await exists(resolve(path, "skip"))
+    await findFile(
+      ["todo", "TODO", "skip", "skip"].map((f) => resolve(path, f)),
+    )
   ) {
     return;
   }
