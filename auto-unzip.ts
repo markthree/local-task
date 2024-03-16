@@ -48,7 +48,7 @@ export async function autoUnzip() {
           await ensureDir(output);
           await ensureFile(pendingFlagFile);
           await un(file, output);
-          await extractNestedFiles(output);
+          await ensureExtractNestedFiles(output);
           await Deno.remove(pendingFlagFile);
           await ensureRemove(file, HOUR);
           await ensureRemove(output, HOUR);
@@ -135,10 +135,12 @@ function getDemoDir() {
   throw new Deno.errors.NotFound("找不到 DEMO_DIR 环境变量");
 }
 
-async function extractNestedFiles(output: string) {
+async function ensureExtractNestedFiles(output: string) {
   const files = await Array.fromAsync(Deno.readDir(output));
-  if (files.length === 1) {
-    await copy(resolve(output, files[0].name), output);
+  const filterFiles = files.filter((v) => v.name !== "un-pending");
+  if (filterFiles.length === 1) {
+    const dir = resolve(output, files[0].name);
+    await copy(dir, output, { overwrite: true });
+    await Deno.remove(dir, { recursive: true });
   }
-  await Deno.remove(resolve(output, files[0].name), { recursive: true });
 }
