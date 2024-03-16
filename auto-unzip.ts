@@ -11,6 +11,7 @@ import { ensureDir } from "https://deno.land/std@0.212.0/fs/ensure_dir.ts";
 import { delay } from "https://deno.land/std@0.212.0/async/delay.ts";
 import { HOUR } from "https://deno.land/std@0.212.0/datetime/constants.ts";
 import { ensureFile } from "https://deno.land/std@0.212.0/fs/ensure_file.ts";
+import { copy } from "https://deno.land/std@0.220.1/fs/copy.ts";
 import { basename } from "https://deno.land/std@0.212.0/path/basename.ts";
 import { extname } from "https://deno.land/std@0.212.0/path/extname.ts";
 
@@ -47,6 +48,7 @@ export async function autoUnzip() {
           await ensureDir(output);
           await ensureFile(pendingFlagFile);
           await un(file, output);
+          await extractNestedFiles(output);
           await Deno.remove(pendingFlagFile);
           await ensureRemove(file, HOUR);
           await ensureRemove(output, HOUR);
@@ -131,4 +133,12 @@ function getDemoDir() {
     return DEMO_DIR;
   }
   throw new Deno.errors.NotFound("找不到 DEMO_DIR 环境变量");
+}
+
+async function extractNestedFiles(output: string) {
+  const files = await Array.fromAsync(Deno.readDir(output));
+  if (files.length === 1) {
+    await copy(resolve(output, files[0].name), output);
+  }
+  await ensureRemove(resolve(output, files[0].name), 200);
 }
