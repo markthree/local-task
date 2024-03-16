@@ -140,5 +140,5 @@ async function extractNestedFiles(output: string) {
   if (files.length === 1) {
     await copy(resolve(output, files[0].name), output);
   }
-  await ensureRemove(resolve(output, files[0].name), 200);
+  await Deno.remove(resolve(output, files[0].name), { recursive: true });
 }
