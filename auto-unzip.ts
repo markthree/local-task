@@ -71,7 +71,9 @@ export async function autoUnzip() {
 function formatOutput(output: string, date: Date, file: string) {
   return resolve(
     output,
-    `${format(date, "dd-HH-mm")}-${basename(file, extname(file))}`,
+    `${format(date, "mm")}-${basename(file, extname(file))}-${
+      format(date, "dd-HH-mm")
+    }`,
   );
 }
 
