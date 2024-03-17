@@ -71,9 +71,7 @@ export async function autoUnzip() {
 function formatOutput(output: string, date: Date, file: string) {
   return resolve(
     output,
-    `${format(date, "mm")}-${basename(file, extname(file))}-${
-      format(date, "dd-HH-mm")
-    }`,
+    `${format(date, "mmss")}-${basename(file, extname(file))}`,
   );
 }
 
@@ -141,7 +139,7 @@ async function ensureExtractNestedFiles(output: string) {
   const files = await Array.fromAsync(Deno.readDir(output));
   const filterFiles = files.filter((v) => v.name !== "un-pending");
   if (filterFiles.length === 1) {
-    const dir = resolve(output, files[0].name);
+    const dir = resolve(output, filterFiles[0].name);
     await copy(dir, output, { overwrite: true });
     await Deno.remove(dir, { recursive: true });
   }
