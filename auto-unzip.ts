@@ -137,7 +137,7 @@ function getDemoDir() {
 
 async function ensureExtractNestedFiles(output: string) {
   const files = await Array.fromAsync(Deno.readDir(output));
-  const filterFiles = files.filter((v) => v.name !== "un-pending");
+  const filterFiles = files.filter((v) => v.name !== "un-pending" && v.name !== '__MACOSX');
   if (filterFiles.length === 1) {
     const dir = resolve(output, filterFiles[0].name);
     await copy(dir, output, { overwrite: true });
