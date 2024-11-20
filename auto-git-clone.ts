@@ -1,7 +1,7 @@
 import { watchClipboard } from "./clipboard-event/index.ts";
-import { exists } from "https://deno.land/std@0.212.0/fs/exists.ts";
-import { basename } from "https://deno.land/std@0.212.0/path/basename.ts";
-import { join } from "https://deno.land/std@0.212.0/path/join.ts";
+import { exists } from "https://deno.land/std@0.224.0/fs/exists.ts";
+import { basename } from "https://deno.land/std@0.224.0/path/basename.ts";
+import { join } from "https://deno.land/std@0.224.0/path/join.ts";
 import { execa } from "https://deno.land/x/easy_std@v0.8.0/mod.ts";
 
 export function autoGitClone() {

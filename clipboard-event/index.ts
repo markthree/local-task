@@ -1,6 +1,6 @@
 // 魔改自 https://github.com/sudhakar3697/node-clipboard-event
-import { platform } from "npm:std-env@3.7.0";
-import { join } from "https://deno.land/std@0.212.0/path/join.ts";
+import { platform } from "npm:std-env";
+import { join } from "https://deno.land/std@0.224.0/path/join.ts";
 import {
   _dirname,
   gracefulShutdown,

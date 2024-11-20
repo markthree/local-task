@@ -2,18 +2,18 @@
 // @ts-ignore 未提供类型支持
 import { unrar } from "npm:unrar-promise";
 import { ensureRemove } from "./kv.ts";
-import "https://deno.land/std@0.212.0/dotenv/load.ts";
-import { resolve } from "https://deno.land/std@0.212.0/path/mod.ts";
-import { exists } from "https://deno.land/std@0.212.0/fs/exists.ts";
-import { format } from "https://deno.land/std@0.212.0/datetime/format.ts";
-import { defaultConfig, unzip } from "https://deno.land/x/nzip@v1.1.2/mod.ts";
-import { ensureDir } from "https://deno.land/std@0.212.0/fs/ensure_dir.ts";
-import { delay } from "https://deno.land/std@0.212.0/async/delay.ts";
-import { HOUR } from "https://deno.land/std@0.212.0/datetime/constants.ts";
-import { ensureFile } from "https://deno.land/std@0.212.0/fs/ensure_file.ts";
+import "https://deno.land/std@0.224.0/dotenv/load.ts";
+import { resolve } from "https://deno.land/std@0.224.0/path/mod.ts";
+import { exists } from "https://deno.land/std@0.224.0/fs/exists.ts";
+import { format } from "https://deno.land/std@0.224.0/datetime/format.ts";
+import { defaultConfig, unzip } from "https://deno.land/x/nzip@v1.2.2/mod.ts";
+import { ensureDir } from "https://deno.land/std@0.224.0/fs/ensure_dir.ts";
+import { delay } from "https://deno.land/std@0.224.0/async/delay.ts";
+import { HOUR } from "https://deno.land/std@0.224.0/datetime/constants.ts";
+import { ensureFile } from "https://deno.land/std@0.224.0/fs/ensure_file.ts";
 import { copy } from "https://deno.land/std@0.220.1/fs/copy.ts";
-import { basename } from "https://deno.land/std@0.212.0/path/basename.ts";
-import { extname } from "https://deno.land/std@0.212.0/path/extname.ts";
+import { basename } from "https://deno.land/std@0.224.0/path/basename.ts";
+import { extname } from "https://deno.land/std@0.224.0/path/extname.ts";
 
 export async function autoUnzip() {
   const demo = getDemoDir();
@@ -137,7 +137,9 @@ function getDemoDir() {
 
 async function ensureExtractNestedFiles(output: string) {
   const files = await Array.fromAsync(Deno.readDir(output));
-  const filterFiles = files.filter((v) => v.name !== "un-pending" && v.name !== '__MACOSX');
+  const filterFiles = files.filter((v) =>
+    v.name !== "un-pending" && v.name !== "__MACOSX"
+  );
   if (filterFiles.length === 1) {
     const dir = resolve(output, filterFiles[0].name);
     await copy(dir, output, { overwrite: true });
