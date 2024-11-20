@@ -23,7 +23,7 @@ export async function autoUnzip() {
   const unPending = new Set<string>();
 
   for await (const event of watcher) {
-    if (event.kind === "modify") {
+    if (event.kind === "rename") {
       const files = event.paths.filter(
         (path) => path.endsWith(".zip") || path.endsWith(".rar"),
       );
@@ -31,6 +31,8 @@ export async function autoUnzip() {
       if (files.length === 0) {
         continue;
       }
+
+      console.log(files);
       files.forEach(async (file) => {
         if (unPending.has(file)) {
           return;
