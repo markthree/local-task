@@ -6,7 +6,7 @@ import "https://deno.land/std@0.224.0/dotenv/load.ts";
 import { resolve } from "https://deno.land/std@0.224.0/path/mod.ts";
 import { exists } from "https://deno.land/std@0.224.0/fs/exists.ts";
 import { format } from "https://deno.land/std@0.224.0/datetime/format.ts";
-import { defaultConfig, unzip } from "https://deno.land/x/nzip@v1.2.2/mod.ts";
+import { defaultConfig, unzip } from "https://deno.land/x/nzip@v1.2.4/mod.ts";
 import { ensureDir } from "https://deno.land/std@0.224.0/fs/ensure_dir.ts";
 import { delay } from "https://deno.land/std@0.224.0/async/delay.ts";
 import { HOUR } from "https://deno.land/std@0.224.0/datetime/constants.ts";
