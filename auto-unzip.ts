@@ -51,6 +51,9 @@ export async function autoUnzip() {
           await ensureFile(pendingFlagFile);
           await un(file, output);
           await ensureExtractNestedFiles(output);
+
+          await maySuggestion(output);
+
           await Deno.remove(pendingFlagFile);
           await ensureRemove(file, HOUR);
           await ensureRemove(output, HOUR);
@@ -146,5 +149,19 @@ async function ensureExtractNestedFiles(output: string) {
     const dir = resolve(output, filterFiles[0].name);
     await copy(dir, output, { overwrite: true });
     await Deno.remove(dir, { recursive: true });
+  }
+}
+
+async function maySuggestion(output: string) {
+  const names = ["(", ")", "（", "）"];
+
+  const shouldSuggestion = names.some((name) => output.includes(name));
+  if (shouldSuggestion) {
+    const suggestion = resolve(output, "suggestion.md");
+
+    await Deno.writeTextFile(
+      suggestion,
+      "发现特殊字符，请尝试修改文件夹，以避免在 uniapp 中出现字体图标无法出现的问题",
+    );
   }
 }
